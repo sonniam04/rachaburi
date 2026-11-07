@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Ratchaburi Nature Trip Map & Story</title>
+
+  <style>
+
+    :root {
+
+      --bg: #0f1115;
+
+      --card-bg: #181b21;
+
+      --card-sub: #1f232b;
+
+      --accent: #10b981;
+
+      --accent-muted: rgba(16, 185, 129, 0.15);
+
+      --text: #f3f4f6;
+
+      --text-muted: #9ca3af;
+
+      --border: #282d37;
+
+      --accent-gold: #f59e0b;
+
+      --accent-blue: #38bdf8;
+
+    }
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+      -webkit-tap-highlight-color: transparent;
+
+    }
+
+    body {
+
+      background-color: var(--bg);
+
+      color: var(--text);
+
+      line-height: 1.5;
+
+      padding-bottom: 60px;
+
+    }
+
+    header {
+
+      padding: 20px;
+
+      background: linear-gradient(180deg, #161a22 0%, var(--bg) 100%);
+
+      border-bottom: 1px solid var(--border);
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 10;
+
+      backdrop-filter: blur(8px);
+
+    }
+
+    h1 {
+
+      font-size: 1.25rem;
+
+      font-weight: 700;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+    .badge {
+
+      display: inline-block;
+
+      font-size: 0.72rem;
+
+      padding: 3px 8px;
+
+      border-radius: 9999px;
+
+      background: var(--accent-muted);
+
+      color: var(--accent);
+
+      font-weight: 600;
+
+      margin-top: 6px;
+
+    }
+
+    .container {
+
+      padding: 16px 20px;
+
+      max-width: 600px;
+
+      margin: 0 auto;
+
+    }
+
+    .section-title {
+
+      font-size: 0.92rem;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.05em;
+
+      color: var(--text-muted);
+
+      margin: 24px 0 12px;
+
+      font-weight: 600;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+    }
+
+   
+
+    /* Interactive Map Controls */
+
+    .map-tabs {
+
+      display: flex;
+
+      gap: 6px;
+
+      margin-bottom: 10px;
+
+      background: var(--card-bg);
+
+      padding: 4px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+    }
+
+    .map-tab-btn {
+
+      flex: 1;
+
+      padding: 8px 10px;
+
+      background: transparent;
+
+      border: none;
+
+      color: var(--text-muted);
+
+      font-size: 0.78rem;
+
+      font-weight: 600;
+
+      border-radius: 6px;
+
+      cursor: pointer;
+
+      transition: all 0.2s ease;
+
+    }
+
+    .map-tab-btn.active {
+
+      background: var(--card-sub);
+
+      color: var(--accent);
+
+      border: 1px solid var(--border);
+
+    }
+
+
+    /* Map Box */
+
+    .map-container {
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      margin-bottom: 12px;
+
+      position: relative;
+
+    }
+
+    .map-iframe {
+
+      width: 100%;
+
+      height: 350px;
+
+      border: none;
+
+      display: block;
+
+    }
+
+    .map-bar {
+
+      padding: 12px 14px;
+
+      background: #14171d;
+
+      border-top: 1px solid var(--border);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      font-size: 0.78rem;
+
+    }
+
+    .btn-full-route {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      background: var(--accent);
+
+      color: #052e16;
+
+      font-weight: 700;
+
+      text-decoration: none;
+
+      padding: 7px 12px;
+
+      border-radius: 6px;
+
+      font-size: 0.78rem;
+
+    }
+
+
+    .offline-notice {
+
+      background: rgba(245, 158, 11, 0.1);
+
+      border: 1px solid rgba(245, 158, 11, 0.25);
+
+      border-radius: 8px;
+
+      padding: 10px 12px;
+
+      font-size: 0.8rem;
+
+      color: #fde68a;
+
+      margin-bottom: 18px;
+
+      line-height: 1.45;
+
+    }
+
+
+    /* Cards with Deep Lore */
+
+    .spot-card {
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      padding: 18px;
+
+      margin-bottom: 20px;
+
+      transition: all 0.2s ease;
+
+      position: relative;
+
+    }
+
+    .spot-card.done {
+
+      opacity: 0.6;
+
+    }
+
+    .spot-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: flex-start;
+
+      margin-bottom: 8px;
+
+    }
+
+    .spot-num {
+
+      display: inline-block;
+
+      font-size: 0.72rem;
+
+      font-weight: 700;
+
+      padding: 2px 8px;
+
+      border-radius: 6px;
+
+      background: rgba(255, 255, 255, 0.06);
+
+      color: var(--accent);
+
+      margin-bottom: 4px;
+
+    }
+
+    .spot-title {
+
+      font-size: 1.15rem;
+
+      font-weight: 700;
+
+      color: var(--text);
+
+    }
+
+    .spot-time {
+
+      font-size: 0.8rem;
+
+      color: var(--accent-gold);
+
+      font-weight: 600;
+
+    }
+
+    .lore-box {
+
+      background: var(--card-sub);
+
+      border-left: 3px solid var(--accent);
+
+      border-radius: 0 8px 8px 0;
+
+      padding: 12px;
+
+      margin: 12px 0;
+
+      font-size: 0.85rem;
+
+      line-height: 1.6;
+
+    }
+
+    .lore-box.myth {
+
+      border-left-color: var(--accent-gold);
+
+    }
+
+    .lore-box.nature {
+
+      border-left-color: var(--accent-blue);
+
+    }
+
+    .lore-title {
+
+      font-size: 0.76rem;
+
+      text-transform: uppercase;
+
+      font-weight: 700;
+
+      letter-spacing: 0.04em;
+
+      margin-bottom: 4px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+    }
+
+    .highlight-list {
+
+      list-style: none;
+
+      margin-top: 10px;
+
+      font-size: 0.84rem;
+
+    }
+
+    .highlight-list li {
+
+      padding: 5px 0;
+
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 8px;
+
+    }
+
+    .highlight-list li:last-child {
+
+      border-bottom: none;
+
+    }
+
+    .highlight-list li span.icon {
+
+      flex-shrink: 0;
+
+    }
+
+
+    /* Actions & Buttons */
+
+    .card-footer {
+
+      display: flex;
+
+      gap: 8px;
+
+      margin-top: 14px;
+
+    }
+
+    .btn {
+
+      flex: 1;
+
+      padding: 8px 12px;
+
+      border-radius: 8px;
+
+      font-size: 0.78rem;
+
+      font-weight: 600;
+
+      text-align: center;
+
+      cursor: pointer;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+      text-decoration: none;
+
+    }
+
+    .btn-outline {
+
+      background: transparent;
+
+      border: 1px solid var(--border);
+
+      color: var(--text-muted);
+
+    }
+
+    .btn-outline.active {
+
+      background: var(--accent);
+
+      border-color: var(--accent);
+
+      color: #052e16;
+
+    }
+
+    .btn-nav {
+
+      background: rgba(56, 189, 248, 0.12);
+
+      border: 1px solid rgba(56, 189, 248, 0.3);
+
+      color: var(--accent-blue);
+
+    }
+
+
+    /* Checklist & Emergency */
+
+    .check-item {
+
+      display: flex;
+
+      align-items: center;
+
+      padding: 12px 14px;
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      margin-bottom: 8px;
+
+      font-size: 0.86rem;
+
+      cursor: pointer;
+
+      gap: 12px;
+
+    }
+
+    .check-item input {
+
+      accent-color: var(--accent);
+
+      width: 17px;
+
+      height: 17px;
+
+    }
+
+    .check-item.done span {
+
+      text-decoration: line-through;
+
+      color: var(--text-muted);
+
+    }
+
+    textarea {
+
+      width: 100%;
+
+      height: 90px;
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      padding: 12px;
+
+      color: var(--text);
+
+      font-size: 0.88rem;
+
+      outline: none;
+
+      resize: none;
+
+      box-sizing: border-box;
+
+      margin-top: 6px;
+
+    }
+
+    textarea:focus { border-color: var(--accent); }
+
+    .nav-grid {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 10px;
+
+    }
+
+    .emer-card {
+
+      background: var(--card-bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 8px;
+
+      padding: 10px 12px;
+
+      font-size: 0.8rem;
+
+    }
+
+    .emer-card a {
+
+      color: var(--accent);
+
+      text-decoration: none;
+
+      font-weight: 600;
+
+      display: block;
+
+      margin-top: 2px;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+  <header>
+
+    <h1>🗺️ ทริปราชบุรี: ป่า สายน้ำ และทิวสน</h1>
+
+    <div class="badge">Google Directions เส้นทางจริง • แผนผังออฟไลน์ • 11:00 - 17:00 น.</div>
+
+  </header>
+
+
+  <div class="container">
+
+
+    <!-- Section: Map Header & Mode Selector -->
+
+    <div class="section-title">
+
+      <span>แผนที่และเส้นทางนำทาง</span>
+
+      <span style="font-size:0.75rem; color:var(--accent);">ระยะทาง ~48 กม.</span>
+
+    </div>
+
+
+    <!-- Map View Toggles -->
+
+    <div class="map-tabs">
+
+      <button class="map-tab-btn active" id="tab-leg1" onclick="switchRoute(1)">ช่วง 1: โอ๊ะป่อย ➔ น้ำตก</button>
+
+      <button class="map-tab-btn" id="tab-leg2" onclick="switchRoute(2)">ช่วง 2: น้ำตก ➔ ภูผาป่าสน</button>
+
+      <button class="map-tab-btn" id="tab-schematic" onclick="switchRoute(3)">ผังรวมทั้งทริป (ออฟไลน์)</button>
+
+    </div>
+
+
+    <!-- Map Container -->
+
+    <div class="map-container">
+
+      <!-- Live Google Map Iframe (Directions API mode) -->
+
+      <div id="live-map-view">
+
+        <iframe
+
+          id="map-frame"
+
+          class="map-iframe"
+
+          loading="lazy"
+
+          allowfullscreen
+
+          referrerpolicy="no-referrer-when-downgrade"
+
+          src="https://maps.google.com/maps?saddr=ตลาดโอ๊ะป่อย&daddr=น้ำตกเก้าโจน&output=embed">
+
+        </iframe>
+
+      </div>
+
+
+      <!-- Offline Schematic Vector View (fallback/overview) -->
+
+      <div id="schematic-view" style="display: none; padding: 20px 14px; background: #14171d;">
+
+        <svg viewBox="0 0 380 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+
+          <path d="M 50 60 Q 110 40, 160 75 T 280 150" stroke="#282d37" stroke-width="8" stroke-linecap="round"/>
+
+          <path d="M 50 60 Q 110 40, 160 75 T 280 150" stroke="#10b981" stroke-width="3" stroke-dasharray="6 6" stroke-linecap="round"/>
+
+
+          <rect x="75" y="32" width="66" height="18" rx="4" fill="#181b21" stroke="#282d37" />
+
+          <text x="108" y="45" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">ช่วง 1 (~6 กม.)</text>
+
+
+          <rect x="185" y="90" width="72" height="18" rx="4" fill="#181b21" stroke="#282d37" />
+
+          <text x="221" y="103" fill="#10b981" font-size="9" font-weight="bold" text-anchor="middle">ช่วง 2 (~42 กม.)</text>
+
+
+          <!-- Point 1 -->
+
+          <g transform="translate(50, 60)">
+
+            <circle r="14" fill="#0f1115" stroke="#f59e0b" stroke-width="2.5"/>
+
+            <circle r="6" fill="#f59e0b"/>
+
+            <text x="0" y="-20" fill="#f3f4f6" font-size="11" font-weight="bold" text-anchor="middle">1. ตลาดโอ๊ะป่อย</text>
+
+            <text x="0" y="26" fill="#f59e0b" font-size="9" text-anchor="middle">11:00 น.</text>
+
+          </g>
+
+
+          <!-- Point 2 -->
+
+          <g transform="translate(160, 75)">
+
+            <circle r="14" fill="#0f1115" stroke="#38bdf8" stroke-width="2.5"/>
+
+            <circle r="6" fill="#38bdf8"/>
+
+            <text x="0" y="-20" fill="#f3f4f6" font-size="11" font-weight="bold" text-anchor="middle">2. น้ำตกเก้าชั้น</text>
+
+            <text x="0" y="26" fill="#38bdf8" font-size="9" text-anchor="middle">13:00 น.</text>
+
+          </g>
+
+
+          <!-- Point 3 -->
+
+          <g transform="translate(280, 150)">
+
+            <circle r="14" fill="#0f1115" stroke="#10b981" stroke-width="2.5"/>
+
+            <circle r="6" fill="#10b981"/>
+
+            <text x="0" y="-20" fill="#f3f4f6" font-size="11" font-weight="bold" text-anchor="middle">3. ภูผาป่าสน</text>
+
+            <text x="0" y="26" fill="#10b981" font-size="9" text-anchor="middle">15:15 น.</text>
+
+          </g>
+
+        </svg>
+
+      </div>
+
+
+      <!-- Action Bar -->
+
+      <div class="map-bar">
+
+        <span id="route-desc" style="color:var(--text-muted);">เส้นทางสีน้ำเงิน: โอ๊ะป่อย ➔ น้ำตกเก้าชั้น</span>
+
+        <a id="nav-btn" class="btn-full-route" href="https://www.google.com/maps/dir/ตลาดโอ๊ะป่อย/น้ำตกเก้าโจน/Phupha+Coffee+Camp+ภูผา+คอฟฟี่+แค้มป์/" target="_blank">
+
+          🚗 เปิด Google Maps นำทางจริง
+
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="offline-notice">
+
+      💡 <strong>วิธีดูเส้นทางเดินรถ:</strong>
+
+      <br>• กดแท็บ <strong>"ช่วง 1"</strong> หรือ <strong>"ช่วง 2"</strong> ด้านบนเพื่อดูเส้นถนนจริงที่ Google Maps ขีดเส้นนำทางให้
+
+      <br>• หากต้องการเริ่มขับรถพร้อมเสียงนำทาง ให้แตะปุ่มสีเขียว <strong>"เปิด Google Maps นำทางจริง"</strong> เพื่อเปิดแอป Maps ประจำเครื่อง
+
+    </div>
+
+
+    <!-- Details & Lore for each spot -->
+
+    <div class="section-title">เรื่องเล่า & ข้อมูลเจาะลึก (The Lore & Highlights)</div>
+
+
+    <!-- Spot 1 -->
+
+    <div class="spot-card" id="card-1">
+
+      <div class="spot-num">จุดที่ 1 • สวนผึ้ง</div>
+
+      <div class="spot-header">
+
+        <div class="spot-title">ตลาดโอ๊ะป่อย (Oh Poi Market)</div>
+
+        <div class="spot-time">11:00 - 12:45 น.</div>
+
+      </div>
+
+
+      <div class="lore-box myth">
+
+        <div class="lore-title" style="color:#f59e0b;">📜 ประวัติและความเป็นมา</div>
+
+        คำว่า <strong>"โอ๊ะป่อย"</strong> เป็นภาษากะเหรี่ยง มีความหมายว่า <em>"พักผ่อน"</em> ที่นี่ไม่ได้เป็นแค่ตลาดท่องเที่ยวที่สร้างขึ้นใหม่ แต่เป็นพื้นที่วิถีชีวิตจริงของชาวไทยเชื้อสายกะเหรี่ยงบ้านท่ามะขาม ซึ่งตั้งรกรากริม <strong>แม่น้ำภาชี</strong> (แม่น้ำสายพิเศษที่แปลกกว่าที่อื่นในไทย เพราะไหลย้อนทิศทางจากใต้ขึ้นสู่เหนือ เพื่อไปบรรจบแม่น้ำแควน้อย) ชุมชนร่วมมือกันรักษาป่าและสายน้ำ เกิดเป็นตลาดวิถีชุมชนที่เน้นความสงบ ไม่เปิดเสียงเพลงดัง และงดใช้พลาสติก โฟม โดยใช้กระบอกไม้ไผ่และใบตองแทนทั้งหมด
+
+      </div>
+
+
+      <ul class="highlight-list">
+
+        <li><span class="icon">🍱</span> <span><strong>เมนูต้องลองเพื่อความอิน:</strong> ข้าวห่อกะเหรี่ยงโบราณ (อังหมี่ถ่อ), เมี่ยงดอย, ขนมบ้าบิ่นมะพร้าวอ่อนย่างสด และน้ำสมุนไพรในกระบอกไม้ไผ่</span></li>
+
+        <li><span class="icon">🌊</span> <span><strong>จุดสัมผัสธรรมชาติ:</strong> นำสำรับอาหารลงไปนั่งทานบนแคร่ไม้ไผ่ริมลำธารภาชี ฟังเสียงน้ำกระทบหินและลมใต้ร่มไม้จามจุรียักษ์</span></li>
+
+      </ul>
+
+
+      <div class="card-footer">
+
+        <button class="btn btn-outline" onclick="toggleSpot(1)">
+
+          <span id="btn-status-1">ยังไม่ถึงจุดนี้</span>
+
+        </button>
+
+        <a class="btn btn-nav" href="https://maps.google.com/?q=ตลาดโอ๊ะป่อย+สวนผึ้ง" target="_blank">🗺️ พิกัดจุดนี้ใน Maps</a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Spot 2 -->
+
+    <div class="spot-card" id="card-2">
+
+      <div class="spot-num">จุดที่ 2 • สวนผึ้ง</div>
+
+      <div class="spot-header">
+
+        <div class="spot-title">น้ำตกเก้าชั้น (น้ำตกเก้าโจน)</div>
+
+        <div class="spot-time">13:00 - 14:30 น.</div>
+
+      </div>
+
+
+      <div class="lore-box nature">
+
+        <div class="lore-title" style="color:#38bdf8;">⛰️ ธรณีวิทยา & กำเนิดชื่อเก้าโจน</div>
+
+        เดิมทีชาวบ้านและพรานป่าเรียกที่นี่ว่า <strong>"น้ำตกเก้าโจน"</strong> ซึ่งมาจากคำว่า <em>"เก้ากระโจน"</em> หมายถึงสายน้ำที่ไหลกระโดดกระโจนลดหลั่นลงมาจากหน้าผาหินแกรนิตสูงใหญ่กลางเทือกเขาตะนาวศรีลงมารวม 9 ชั้นใหญ่ๆ (ภายหลังจึงมีชื่อเรียกเป็นทางการว่าน้ำตกเก้าชั้น) ชั้นหินที่นี่เป็นหินแกรนิตยุคโบราณที่ทนทานต่อการกัดเซาะ ทำให้เกิดเป็นแอ่งเวิ้งน้ำใสแจ๋วตลอดเส้นทาง และเป็นแหล่งกำเนิดต้นน้ำบริสุทธิ์ที่ไหลหล่อเลี้ยงอำเภอสวนผึ้ง
+
+      </div>
+
+
+      <ul class="highlight-list">
+
+        <li><span class="icon">🚶</span> <span><strong>จุดเดินเทรลแนะนำ:</strong> ระยะเวลาช่วงบ่ายเหมาะกับการเดินจาก <strong>ชั้น 1 ถึง ชั้น 3</strong> (ระยะทางเดินประมาณ 500-600 เมตร) ทางเดินร่มรื่นใต้เรือนยอดไม้ดิบแล้ง ไม่ชันจนเกินไป</span></li>
+
+        <li><span class="icon">💦</span> <span><strong>ไฮไลต์ชั้น 2 & 3:</strong> มีลานหินแกรนิตกว้างและแอ่งน้ำตื้น สามารถนั่งแช่เท้าพักผ่อนฟังเสียงละอองน้ำกระเซ็นดับร้อนได้สดชื่นที่สุด</span></li>
+
+      </ul>
+
+
+      <div class="card-footer">
+
+        <button class="btn btn-outline" onclick="toggleSpot(2)">
+
+          <span id="btn-status-2">ยังไม่ถึงจุดนี้</span>
+
+        </button>
+
+        <a class="btn btn-nav" href="https://maps.google.com/?q=น้ำตกเก้าชั้น+สวนผึ้ง" target="_blank">🗺️ พิกัดจุดนี้ใน Maps</a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Spot 3 -->
+
+    <div class="spot-card" id="card-3">
+
+      <div class="spot-num">จุดที่ 3 • บ้านคา (อ่างเก็บน้ำท่าเคย)</div>
+
+      <div class="spot-header">
+
+        <div class="spot-title">ภูผาป่าสน (Phupha Coffee Camp)</div>
+
+        <div class="spot-time">15:15 - 17:00 น.</div>
+
+      </div>
+
+
+      <div class="lore-box">
+
+        <div class="lore-title" style="color:var(--accent);">🌲 ป่าสนริมน้ำ & ทัศนียภาพสวิตเซอร์แลนด์เมืองไทย</div>
+
+        พื้นที่นี้ตั้งอยู่ริม <strong>อ่างเก็บน้ำห้วยท่าเคย</strong> ในเขตอำเภอบ้านคา ซึ่งเดิมเป็นโครงการอ่างเก็บน้ำชลประทานเพื่อการเกษตรของหุบเขาตะนาวศรีตอนใต้ ความพิเศษคือสภาพภูมิอากาศเฉพาะถิ่นที่มีลมพัดผ่านช่องเขาตลอดทั้งปี และมีการปลูก <strong>ป่าสนสองใบ/สนสามใบ</strong> เรียงรายลาดเอียงลงสู่แนวขอบผืนน้ำกว้าง ทำให้เกิดบรรยากาศคล้ายทิวสนริมทะเลสาบในแถบยุโรป จนกลายเป็นหมุดหมายแคมป์ปิ้งธรรมชาติอันดับต้น ๆ ของราชบุรี
+
+      </div>
+
+
+      <ul class="highlight-list">
+
+        <li><span class="icon">☕</span> <span><strong>กิจกรรมช่วง 15:30 - 17:00 น.:</strong> จิบเครื่องดื่มเย็น ๆ นั่งเก้าอี้แคมป์ใต้ร่มเงาสน รับลมภูเขาที่พัดผ่านผิวน้ำอ่างเก็บน้ำ แสงแดดยามเย็นจะส่องสะท้อนผิวน้ำเป็นประกายสีทอง</span></li>
+
+        <li><span class="icon">📸</span> <span><strong>มุมถ่ายรูปไฮไลต์:</strong> มุมทางเดินแนวทิวสนที่ทอดสายตามุ่งสู่ผืนน้ำ โดยมีฉากหลังเป็นแนวเทือกเขาหินปูนสลับซับซ้อนของบ้านคา</span></li>
+
+      </ul>
+
+
+      <div class="card-footer">
+
+        <button class="btn btn-outline" onclick="toggleSpot(3)">
+
+          <span id="btn-status-3">ยังไม่ถึงจุดนี้</span>
+
+        </button>
+
+        <a class="btn btn-nav" href="https://maps.google.com/?q=ภูผา+คอฟฟี่+แค้มป์+บ้านคา" target="_blank">🗺️ พิกัดจุดนี้ใน Maps</a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Offline Notes & Checklist -->
+
+    <div class="section-title">เตรียมความพร้อม & โน้ตส่วนตัว</div>
+
+    <div class="check-item" onclick="toggleCheck(this, 'c1')">
+
+      <input type="checkbox" id="c1">
+
+      <span>เตรียมเงินสดติดตัว (บริเวณโอ๊ะป่อยและน้ำตกบางจุดสัญญาณเน็ตอ่อน)</span>
+
+    </div>
+
+    <div class="check-item" onclick="toggleCheck(this, 'c2')">
+
+      <input type="checkbox" id="c2">
+
+      <span>รองเท้าพื้นยางยึดเกาะดี สำหรับเดินลานหินน้ำตกเก้าโจน</span>
+
+    </div>
+
+    <div class="check-item" onclick="toggleCheck(this, 'c3')">
+
+      <input type="checkbox" id="c3">
+
+      <span>เสื้อคลุมบาง/แว่นกันแดด สำหรับรับลมยามเย็นที่ภูผาป่าสน</span>
+
+    </div>
+
+
+    <textarea id="myTripNotes" placeholder="พิมพ์บันทึกกันลืมไว้ตรงนี้ได้เลย ข้อมูลจะถูกเซฟในเครื่องอัตโนมัติ..." oninput="saveNote()"></textarea>
+
+
+    <!-- Emergency Contacts -->
+
+    <div class="section-title">เบอร์โทรติดต่อฉุกเฉิน</div>
+
+    <div class="nav-grid">
+
+      <div class="emer-card">
+
+        <strong>สภ.สวนผึ้ง</strong>
+
+        <a href="tel:032395111">032-395-111</a>
+
+      </div>
+
+      <div class="emer-card">
+
+        <strong>สภ.บ้านคา</strong>
+
+        <a href="tel:032206680">032-206-680</a>
+
+      </div>
+
+      <div class="emer-card">
+
+        <strong>รพ.สวนผึ้ง</strong>
+
+        <a href="tel:032395475">032-395-475</a>
+
+      </div>
+
+      <div class="emer-card">
+
+        <strong>ตำรวจท่องเที่ยว</strong>
+
+        <a href="tel:1155">1155</a>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <script>
+
+    // Tab switching for Routes
+
+    function switchRoute(mode) {
+
+      const btn1 = document.getElementById('tab-leg1');
+
+      const btn2 = document.getElementById('tab-leg2');
+
+      const btn3 = document.getElementById('tab-schematic');
+
+      const frame = document.getElementById('map-frame');
+
+      const liveView = document.getElementById('live-map-view');
+
+      const schemView = document.getElementById('schematic-view');
+
+      const desc = document.getElementById('route-desc');
+
+      const navBtn = document.getElementById('nav-btn');
+
+
+      [btn1, btn2, btn3].forEach(b => b.classList.remove('active'));
+
+
+      if (mode === 1) {
+
+        btn1.classList.add('active');
+
+        liveView.style.display = 'block
